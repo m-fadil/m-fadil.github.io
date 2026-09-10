@@ -152,10 +152,10 @@ export default function App() {
             <p className="lede">{profile.lede}</p>
             <div className="cta">
               <a className="btn btn-primary" href="#work">
-                See the work
+                See my work
               </a>
               <a className="btn" href={`mailto:${profile.email}`}>
-                Start a conversation
+                Get in touch
               </a>
             </div>
             <ul className="stats">
@@ -238,7 +238,7 @@ export default function App() {
                   ))}
                 </ul>
                 <a className="link" href={p.href} target="_blank" rel="noopener">
-                  Read the source <span aria-hidden>↗</span>
+                  Source <span aria-hidden>↗</span>
                 </a>
               </article>
             ))}
@@ -253,7 +253,7 @@ export default function App() {
         <Section id="contact" num="04" title="Contact">
           <div className="contact reveal">
             <p className="lede">
-              Got a product, a role, or an ERP that refuses to deploy? Mail lands in one inbox and I read all of it.
+              Got a project, a role, or an ERP that refuses to deploy? I read every message.
             </p>
             <a className="mail" href={`mailto:${profile.email}`}>
               {profile.email}
@@ -273,7 +273,7 @@ export default function App() {
 
       <footer>
         <span>© {new Date().getFullYear()} Mukhammad Fadhila Ikhsani</span>
-        <span>Vite · React · TypeScript — deployed by GitHub Actions</span>
+        <span>Vite · React · TypeScript · deployed by GitHub Actions</span>
       </footer>
     </>
   )

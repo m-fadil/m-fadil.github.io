@@ -8,10 +8,10 @@ export const profile = {
     'Backend & Platform Engineer',
     'Frappe / ERPNext specialist',
     'Docker, Nix & CI plumbing',
-    'Fullstack when the job asks',
+    'Fullstack when it is needed',
   ],
   lede:
-    'I work on the unglamorous layer everything else stands on — schemas that survive migrations, deploys that survive Fridays, and ERP systems boring enough to sleep through.',
+    'I build backends and the deployment plumbing around them. Most of that work is Frappe/ERPNext right now: immutable images, rollouts that do not drop requests, and an AI layer running beside it.',
   stats: [
     { value: '5+', label: 'years writing code' },
     { value: '29', label: 'public repositories' },
@@ -28,8 +28,8 @@ export const sections = [
 
 export const about = {
   paragraphs: [
-    'I am a backend-leaning engineer with a taste for the parts nobody demos: schema design, rollout mechanics, and shaving the sharp edges off systems until an incident becomes a non-event. Most of my recent hours go to **Frappe/ERPNext** — packing it into immutable images, rolling it out without dropping a request, and giving it an AI layer it does not have to host itself.',
-    'Before that: internal HR and recruitment tooling at **PT INKA (Persero)**, an over-the-air firmware pipeline for ESP8266 fleets, and a run of Laravel and Next.js applications. The pattern is constant — I learn a system by building the whole of it, then deleting the half that turned out unnecessary.',
+    'I am a backend-leaning engineer who enjoys the unglamorous parts: schema design, deployment reliability, and making a system boring enough to sleep through the night. Most of my recent work sits around **Frappe/ERPNext**: packaging it into immutable container images, shipping zero-downtime rollouts, and wiring it to AI services.',
+    'Before that I shipped internal HR and recruitment tools at **PT INKA (Persero)**, an OTA firmware update system for ESP8266 devices, and a handful of Laravel and Next.js applications. I like learning by building the whole thing.',
   ],
   quote: 'Build things, break things, learn things.',
   facts: [
@@ -61,34 +61,10 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    name: 'frappe-builder',
-    tag: 'Platform',
-    blurb:
-      'Production build harness for custom Frappe/ERPNext images: BuildKit secret mounts so credentials never land in a layer, accumulated shared assets so a mid-rollout request never 404s, runtime DNS resolution in Nginx, multi-arch releases with build provenance.',
-    tech: ['Docker', 'Shell', 'Nginx', 'GitHub Actions'],
-    href: 'https://github.com/m-fadil/frappe-builder',
-  },
-  {
-    name: 'retrieval-service',
-    tag: 'AI',
-    blurb:
-      'An AI gateway that sits beside Frappe instead of inside it: RAG over Qdrant, MCP tool calls back into Frappe, an LLM as the reasoning layer. Frappe runs no models — no embeddings, no GPU, no bench restart to ship a prompt.',
-    tech: ['TypeScript', 'Fastify', 'Qdrant', 'Zod', 'Docker'],
-    href: 'https://github.com/m-fadil/retrieval-service',
-  },
-  {
-    name: 'frappe-executable',
-    tag: 'Tooling',
-    blurb:
-      'Five shell scripts for the Frappe chores nobody wants to retype: bootstrapping a bench, cloning production into dev without emailing the customer list, minting API users. No hardcoded host, no hardcoded password — every knob is an env var.',
-    tech: ['Shell', 'Frappe', 'Bench'],
-    href: 'https://github.com/m-fadil/frappe-executable',
-  },
-  {
     name: 'PKWT Workforce Tracking',
     tag: 'PT INKA',
     blurb:
-      'Internal dashboard tracking fixed-term employment contracts: expiry reminders that fire before HR notices, role-scoped access, and an audit trail for every extension.',
+      'Internal dashboard tracking contract periods of PKWT employees, with reminders before contracts expire and role-scoped access for HR.',
     tech: ['Laravel', 'Tailwind CSS', 'Alpine.js', 'MySQL'],
     href: 'https://github.com/m-fadil/Project-SDM_Tracking-PKWT',
   },
@@ -96,7 +72,7 @@ export const projects: Project[] = [
     name: 'OTA Firmware Update',
     tag: 'IoT',
     blurb:
-      'Over-the-air firmware delivery for ESP8266 fleets — a server that versions builds, devices that pull and flash themselves, and a rollback path for the build that should not have shipped.',
+      'Over-the-air firmware delivery for ESP8266 fleets: a server that versions builds, and devices that pull and flash updates themselves.',
     tech: ['Python', 'Node.js', 'ESP8266'],
     href: 'https://github.com/m-fadil/OTAUpdate-Firmware-ESP8266',
   },
@@ -104,9 +80,33 @@ export const projects: Project[] = [
     name: 'dot-nix',
     tag: 'Dotfiles',
     blurb:
-      'My NixOS configuration as a flake, split by function — system, shell, editors, runtimes, apps — so rebuilding a laptop costs one command instead of one weekend.',
+      'My NixOS configuration as a flake, split by function (system, shell, editors, dev runtimes, apps) so a laptop rebuild is one command instead of one weekend.',
     tech: ['Nix', 'Flakes', 'Home Manager'],
     href: 'https://github.com/m-fadil/dot-nix',
+  },
+  {
+    name: 'frappe-builder',
+    tag: 'Platform',
+    blurb:
+      'Production build harness for custom Frappe/ERPNext images: BuildKit secret mounts so credentials never land in layers, accumulating shared assets so a mid-rollout request never 404s, dynamic DNS resolution in Nginx, and multi-arch releases with build provenance.',
+    tech: ['Docker', 'Shell', 'Nginx', 'GitHub Actions'],
+    href: 'https://github.com/m-fadil/frappe-builder',
+  },
+  {
+    name: 'retrieval-service',
+    tag: 'AI',
+    blurb:
+      'AI gateway for Frappe: RAG on top of Qdrant, MCP tool calling into Frappe, and an LLM as the reasoning layer. Frappe itself runs no models, so no embeddings and no GPU.',
+    tech: ['TypeScript', 'Fastify', 'Qdrant', 'Zod', 'Docker'],
+    href: 'https://github.com/m-fadil/retrieval-service',
+  },
+  {
+    name: 'frappe-executable',
+    tag: 'Tooling',
+    blurb:
+      'Five shell scripts for the Frappe chores nobody wants to retype: bootstrapping a bench, cloning production into dev without spamming customers, and minting API users. No hardcoded hosts or passwords, every knob is an env var.',
+    tech: ['Shell', 'Frappe', 'Bench'],
+    href: 'https://github.com/m-fadil/frappe-executable',
   },
 ]
 
