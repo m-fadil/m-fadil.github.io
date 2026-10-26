@@ -1,7 +1,7 @@
 export const profile = {
   first: 'Mukhammad',
   last: 'Fadhila Ikhsani',
-  avatar: 'https://avatars.githubusercontent.com/u/72676727?v=4',
+  avatar: '/avatar.webp',
   email: 'wrk.fadil@gmail.com',
   location: 'Malang, Indonesia',
   roles: [
@@ -14,17 +14,18 @@ export const profile = {
     'I build backends and the deployment plumbing around them. Most of that work is Frappe/ERPNext right now: immutable images, rollouts that do not drop requests, and an AI layer running beside it.',
   stats: [
     { value: '5+', label: 'years writing code' },
-    { value: '29', label: 'public repositories' },
     { value: 'UTC+7', label: 'Malang, Indonesia' },
   ],
 } as const
 
-export const sections = [
+export const sections: readonly { id: string; num: string; label: string; title?: string }[] = [
   { id: 'about', num: '01', label: 'About' },
   { id: 'stack', num: '02', label: 'Stack' },
-  { id: 'work', num: '03', label: 'Work' },
+  { id: 'work', num: '03', label: 'Work', title: 'Selected work' },
   { id: 'contact', num: '04', label: 'Contact' },
-] as const
+]
+
+export const marquee = ['Frappe / ERPNext', 'Docker', 'TypeScript', 'Fastify', 'NixOS', 'PostgreSQL', 'Qdrant', 'GitHub Actions', 'React']
 
 export const about = {
   paragraphs: [
@@ -113,6 +114,6 @@ export const projects: Project[] = [
 export const socials = [
   { label: 'GitHub', href: 'https://github.com/m-fadil' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/fadhila-ikhsani/' },
-  { label: 'Twitter', href: 'https://twitter.com/FadhilaIkhsani' },
+  { label: 'X', href: 'https://x.com/FadhilaIkhsani' },
   { label: 'Instagram', href: 'https://www.instagram.com/fadhila_ikhsani/' },
 ] as const

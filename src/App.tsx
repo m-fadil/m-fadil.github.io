@@ -1,70 +1,84 @@
-import { useEffect, useState, type PointerEvent, type ReactNode } from 'react'
-import { about, profile, projects, sections, socials, stack } from './content'
+import { useEffect, useRef, useState, type PointerEvent, type ReactNode, type RefObject } from 'react'
+import { about, marquee, profile, projects, sections, socials, stack } from './content'
 
-const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches
-
-/** Cycles a mono-typed role line under the headline. */
+/** Cycles a mono-typed role line under the headline; static when motion is reduced. */
 function useTyped(words: readonly string[]) {
   const [text, setText] = useState(words[0])
   useEffect(() => {
-    if (reduced()) return
-    let word = 0
-    let cut = 0
-    let erasing = false
+    const mq = matchMedia('(prefers-reduced-motion: reduce)')
     let timer = 0
-    const tick = () => {
-      const current = words[word]
-      setText(current.slice(0, cut))
-      if (!erasing && cut === current.length) {
-        erasing = true
-        timer = setTimeout(tick, 1800)
-        return
+    const run = () => {
+      clearTimeout(timer)
+      if (mq.matches) return setText(words[0])
+      let word = 0
+      let cut = 0
+      let erasing = false
+      const tick = () => {
+        const current = words[word]
+        setText(current.slice(0, cut))
+        if (!erasing && cut === current.length) {
+          erasing = true
+          timer = setTimeout(tick, 1800)
+          return
+        }
+        if (erasing && cut === 0) {
+          erasing = false
+          word = (word + 1) % words.length
+        }
+        cut += erasing ? -1 : 1
+        timer = setTimeout(tick, erasing ? 26 : 60)
       }
-      if (erasing && cut === 0) {
-        erasing = false
-        word = (word + 1) % words.length
-      }
-      cut += erasing ? -1 : 1
-      timer = setTimeout(tick, erasing ? 26 : 60)
+      tick()
     }
-    tick()
-    return () => clearTimeout(timer)
+    run()
+    mq.addEventListener('change', run)
+    return () => {
+      mq.removeEventListener('change', run)
+      clearTimeout(timer)
+    }
   }, [words])
   return text
 }
 
 const sectionIds = sections.map((s) => s.id)
 
-/** Marks the section currently crossing the middle of the viewport. */
+/** Marks the section crossing the middle of the viewport. */
 function useActiveSection() {
   const [active, setActive] = useState(sectionIds[0])
   useEffect(() => {
-    const pick = () => {
-      const mid = innerHeight / 2
-      let current = sectionIds[0]
-      for (const id of sectionIds) {
-        const top = document.getElementById(id)?.getBoundingClientRect().top
-        if (top !== undefined && top <= mid) current = id
-      }
-      setActive(current)
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setActive(e.target.id)
+      },
+      { rootMargin: '-50% 0px -50% 0px' },
+    )
+    for (const id of sectionIds) {
+      const el = document.getElementById(id)
+      if (el) io.observe(el)
     }
-    pick()
-    addEventListener('scroll', pick, { passive: true })
-    return () => removeEventListener('scroll', pick)
+    return () => io.disconnect()
   }, [])
   return active
 }
 
-/** Feeds pointer position to CSS for the ambient spotlight. */
-function usePointerLight() {
+/** Feeds pointer position to the spotlight element, at most once per frame. */
+function usePointerLight(ref: RefObject<HTMLElement | null>) {
   useEffect(() => {
+    let raf = 0
     const move = (e: globalThis.PointerEvent) => {
-      document.body.style.setProperty('--px', `${e.clientX}px`)
-      document.body.style.setProperty('--py', `${e.clientY}px`)
+      if (raf) return
+      raf = requestAnimationFrame(() => {
+        raf = 0
+        ref.current?.style.setProperty('--px', `${e.clientX}px`)
+        ref.current?.style.setProperty('--py', `${e.clientY}px`)
+      })
     }
     addEventListener('pointermove', move, { passive: true })
-    return () => removeEventListener('pointermove', move)
-  }, [])
+    return () => {
+      removeEventListener('pointermove', move)
+      cancelAnimationFrame(raf)
+    }
+  }, [ref])
 }
 
 /** Renders **bold** spans without pulling in a markdown parser. */
@@ -76,12 +90,13 @@ function Rich({ text }: { text: string }) {
   )
 }
 
-function Section({ id, num, title, children }: { id: string; num: string; title: string; children: ReactNode }) {
+function Section({ id, children }: { id: string; children: ReactNode }) {
+  const s = sections.find((x) => x.id === id)!
   return (
     <section id={id}>
       <h2 className="reveal">
-        <span className="num">{num}</span>
-        {title}
+        <span className="num">{s.num}</span>
+        {s.title ?? s.label}
       </h2>
       {children}
     </section>
@@ -97,16 +112,20 @@ function spotlight(e: PointerEvent<HTMLElement>) {
 export default function App() {
   const typed = useTyped(profile.roles)
   const active = useActiveSection()
-  usePointerLight()
+  const spot = useRef<HTMLSpanElement>(null)
+  usePointerLight(spot)
 
   return (
     <>
+      <a className="skip" href="#top">
+        Skip to content
+      </a>
       <div className="canvas" aria-hidden>
         <span className="orb orb-1" />
         <span className="orb orb-2" />
         <span className="orb orb-3" />
         <span className="grid" />
-        <span className="spot" />
+        <span className="spot" ref={spot} />
       </div>
 
       <header className="nav">
@@ -145,9 +164,11 @@ export default function App() {
               <span className="line-1">{profile.first}</span>
               <span className="line-2">{profile.last}</span>
             </h1>
-            <p className="role">
-              {typed}
-              <span className="caret" />
+            <p className="role" aria-label={profile.roles[0]}>
+              <span aria-hidden>
+                {typed}
+                <span className="caret" />
+              </span>
             </p>
             <p className="lede">{profile.lede}</p>
             <div className="cta">
@@ -176,21 +197,19 @@ export default function App() {
           <div className="marquee-track">
             {[0, 1].map((copy) => (
               <span key={copy}>
-                {['Frappe / ERPNext', 'Docker', 'TypeScript', 'Fastify', 'NixOS', 'PostgreSQL', 'Qdrant', 'GitHub Actions', 'React'].map(
-                  (w) => (
-                    <em key={w}>{w}</em>
-                  ),
-                )}
+                {marquee.map((w) => (
+                  <em key={w}>{w}</em>
+                ))}
               </span>
             ))}
           </div>
         </div>
 
-        <Section id="about" num="01" title="About">
+        <Section id="about">
           <div className="two-col">
             <div className="prose reveal">
-              {about.paragraphs.map((p) => (
-                <p key={p.slice(0, 24)}>
+              {about.paragraphs.map((p, i) => (
+                <p key={i}>
                   <Rich text={p} />
                 </p>
               ))}
@@ -207,7 +226,7 @@ export default function App() {
           </div>
         </Section>
 
-        <Section id="stack" num="02" title="Stack">
+        <Section id="stack">
           <div className="grid-cards">
             {stack.map((group) => (
               <article key={group.title} className="card reveal" onPointerMove={spotlight}>
@@ -222,7 +241,7 @@ export default function App() {
           </div>
         </Section>
 
-        <Section id="work" num="03" title="Selected work">
+        <Section id="work">
           <div className="grid-cards work">
             {projects.map((p, i) => (
               <article key={p.name} className="card project reveal" onPointerMove={spotlight}>
@@ -250,7 +269,7 @@ export default function App() {
           </p>
         </Section>
 
-        <Section id="contact" num="04" title="Contact">
+        <Section id="contact">
           <div className="contact reveal">
             <p className="lede">
               Got a project, a role, or an ERP that refuses to deploy? I read every message.
