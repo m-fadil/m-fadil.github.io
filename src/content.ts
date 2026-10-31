@@ -3,13 +3,13 @@ export const profile = {
   last: 'Fadhila Ikhsani',
   avatar: '/avatar.webp',
   email: 'wrk.fadil@gmail.com',
-  location: 'Malang, Indonesia',
+  location: 'Madiun, East Java, Indonesia',
   role: 'Backend Developer',
   lede:
     'I build backend applications with Node.js, TypeScript, and NestJS, and develop custom business applications with Frappe Framework. My focus is on APIs, integrations, and the business logic behind application workflows.',
   stats: [
     { value: '5+', label: 'years writing code' },
-    { value: 'UTC+7', label: 'Malang, Indonesia' },
+    { value: 'UTC+7', label: 'Madiun, East Java, Indonesia' },
   ],
 } as const
 
