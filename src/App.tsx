@@ -1,45 +1,6 @@
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode, type RefObject } from 'react'
 import { about, marquee, profile, projects, sections, socials, stack } from './content'
 
-/** Cycles a mono-typed role line under the headline; static when motion is reduced. */
-function useTyped(words: readonly string[]) {
-  const [text, setText] = useState(words[0])
-  useEffect(() => {
-    const mq = matchMedia('(prefers-reduced-motion: reduce)')
-    let timer = 0
-    const run = () => {
-      clearTimeout(timer)
-      if (mq.matches) return setText(words[0])
-      let word = 0
-      let cut = 0
-      let erasing = false
-      const tick = () => {
-        const current = words[word]
-        setText(current.slice(0, cut))
-        if (!erasing && cut === current.length) {
-          erasing = true
-          timer = setTimeout(tick, 1800)
-          return
-        }
-        if (erasing && cut === 0) {
-          erasing = false
-          word = (word + 1) % words.length
-        }
-        cut += erasing ? -1 : 1
-        timer = setTimeout(tick, erasing ? 26 : 60)
-      }
-      tick()
-    }
-    run()
-    mq.addEventListener('change', run)
-    return () => {
-      mq.removeEventListener('change', run)
-      clearTimeout(timer)
-    }
-  }, [words])
-  return text
-}
-
 const sectionIds = sections.map((s) => s.id)
 
 /** Marks the section crossing the middle of the viewport. */
@@ -110,7 +71,6 @@ function spotlight(e: PointerEvent<HTMLElement>) {
 }
 
 export default function App() {
-  const typed = useTyped(profile.roles)
   const active = useActiveSection()
   const spot = useRef<HTMLSpanElement>(null)
   usePointerLight(spot)
@@ -158,18 +118,13 @@ export default function App() {
         <section className="hero">
           <div className="hero-copy">
             <p className="kicker">
-              <span className="dot" /> Available for backend &amp; platform work
+              <span className="dot" /> Available for backend development
             </p>
             <h1>
               <span className="line-1">{profile.first}</span>
               <span className="line-2">{profile.last}</span>
             </h1>
-            <p className="role" aria-label={profile.roles[0]}>
-              <span aria-hidden>
-                {typed}
-                <span className="caret" />
-              </span>
-            </p>
+            <p className="role">{profile.role}</p>
             <p className="lede">{profile.lede}</p>
             <div className="cta">
               <a className="btn btn-primary" href="#work">
@@ -272,7 +227,7 @@ export default function App() {
         <Section id="contact">
           <div className="contact reveal">
             <p className="lede">
-              Got a project, a role, or an ERP that refuses to deploy? I read every message.
+              Looking for a backend developer for a Node.js, NestJS, or Frappe project? Let&apos;s talk.
             </p>
             <a className="mail" href={`mailto:${profile.email}`}>
               {profile.email}

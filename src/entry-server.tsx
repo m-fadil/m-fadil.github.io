@@ -10,7 +10,7 @@ export function render(url: string) {
     '@type': 'ProfilePage',
     '@id': `${url}#profile`,
     url,
-    name: `${name} — ${profile.roles[0]}`,
+    name: `${name} — ${profile.role}`,
     inLanguage: 'en',
     mainEntity: {
       '@type': 'Person',
@@ -18,7 +18,7 @@ export function render(url: string) {
       name,
       url,
       image: new URL(profile.avatar, url).href,
-      jobTitle: profile.roles[0],
+      jobTitle: profile.role,
       description: profile.lede,
       homeLocation: { '@type': 'Place', name: profile.location },
       sameAs: socials.map(({ href }) => href),

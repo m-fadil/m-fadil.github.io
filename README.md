@@ -2,6 +2,15 @@
 
 React, TypeScript, and Vite portfolio hosted on GitHub Pages.
 
+## Content
+
+The portfolio focuses on Node.js/TypeScript, NestJS, and custom application development with Frappe Framework. `src/content.ts` owns the profile, skills, AI-assisted development workflow (Claude Code, Codex, OpenCode, and Pi), and selected public projects. Configuration repositories and private source links are excluded; organization-hosted NestJS work is described without publishing internal project details. Go is presented as an interest, not an established skill.
+
+The public `frappe-api` project highlights endpoint decorators, request validation, configurable API logging, and runtime access controls. It is listed separately from the archived `frappe-backend-v1` toolkit.
+
+Keep the static role in sync with the title/social metadata in `index.html` and the preview image in `public/og.png`. Structured data derives the role and introduction from the profile at build time.
+
+
 ## Development and production
 
 ```sh

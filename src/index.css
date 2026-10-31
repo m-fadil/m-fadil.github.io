@@ -376,20 +376,6 @@ h1 span {
   font: 400 clamp(14px, 2vw, 18px) var(--mono);
   color: color-mix(in oklab, var(--ink) 82%, transparent);
 }
-.caret {
-  display: inline-block;
-  width: 9px;
-  height: 1.05em;
-  margin-left: 4px;
-  vertical-align: -2px;
-  background: var(--c3);
-  animation: blink 1s steps(2) infinite;
-}
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
 .cta {
   display: flex;
   flex-wrap: wrap;

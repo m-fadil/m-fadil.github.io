@@ -4,14 +4,9 @@ export const profile = {
   avatar: '/avatar.webp',
   email: 'wrk.fadil@gmail.com',
   location: 'Malang, Indonesia',
-  roles: [
-    'Backend & Platform Engineer',
-    'Frappe / ERPNext specialist',
-    'Docker, Nix & CI plumbing',
-    'Fullstack when it is needed',
-  ],
+  role: 'Backend Developer',
   lede:
-    'I build backends and the deployment plumbing around them. Most of that work is Frappe/ERPNext right now: immutable images, rollouts that do not drop requests, and an AI layer running beside it.',
+    'I build backend applications with Node.js, TypeScript, and NestJS, and develop custom business applications with Frappe Framework. My focus is on APIs, integrations, and the business logic behind application workflows.',
   stats: [
     { value: '5+', label: 'years writing code' },
     { value: 'UTC+7', label: 'Malang, Indonesia' },
@@ -25,31 +20,29 @@ export const sections: readonly { id: string; num: string; label: string; title?
   { id: 'contact', num: '04', label: 'Contact' },
 ]
 
-export const marquee = ['Frappe / ERPNext', 'Docker', 'TypeScript', 'Fastify', 'NixOS', 'PostgreSQL', 'Qdrant', 'GitHub Actions', 'React']
+export const marquee = ['Node.js', 'TypeScript', 'NestJS', 'Frappe Framework', 'Python', 'Fastify', 'PostgreSQL', 'Prisma', 'MongoDB']
 
 export const about = {
   paragraphs: [
-    'I am a backend-leaning engineer who enjoys the unglamorous parts: schema design, deployment reliability, and making a system boring enough to sleep through the night. Most of my recent work sits around **Frappe/ERPNext**: packaging it into immutable container images, shipping zero-downtime rollouts, and wiring it to AI services.',
-    'Before that I shipped internal HR and recruitment tools at **PT INKA (Persero)**, an OTA firmware update system for ESP8266 devices, and a handful of Laravel and Next.js applications. I like learning by building the whole thing.',
+    'I focus on **backend development**: building APIs, integrating services, and translating business requirements into application logic. I work with **Node.js, TypeScript, and NestJS**, alongside Python and **Frappe Framework** for custom business applications. My NestJS work lives in organization repositories rather than on my personal GitHub.',
+    'My projects span business workflows, service integrations, and developer tools. I also work with databases and deployment tooling to support the applications I build. I am interested in exploring **Go** for backend development.',
+    'I use **AI coding agents** throughout my development workflow: code exploration, implementation, debugging, code review, and testing. My tools include **Claude Code, Codex, OpenCode, and Pi**. I review generated changes and validate the results rather than treating agent output as finished work.',
   ],
   quote: 'Build things, break things, learn things.',
   facts: [
-    { k: 'Focus', v: 'Backend · DevOps · Platform' },
-    { k: 'Domain', v: 'ERP (Frappe/ERPNext), internal tools, AI gateways' },
+    { k: 'Focus', v: 'Backend development · APIs · Integrations' },
+    { k: 'Applications', v: 'Custom business apps · Internal tools · Service integrations' },
     { k: 'Education', v: 'B.Eng. Computer Engineering, Universitas Brawijaya' },
-    { k: 'Daily driver', v: 'NixOS, Helix, Docker/Podman' },
-    { k: 'Open to', v: 'Backend / Platform roles & freelance' },
+    { k: 'Workflow', v: 'AI-assisted development · Code review · Testing' },
+    { k: 'Open to', v: 'Node.js / NestJS and Frappe roles & projects' },
   ],
 } as const
 
 export const stack = [
-  { title: 'Languages', items: ['TypeScript', 'JavaScript', 'Python', 'PHP', 'Shell', 'C++', 'Nix'] },
-  {
-    title: 'Backend & Data',
-    items: ['Fastify', 'NestJS', 'Express', 'Laravel', 'Frappe', 'Prisma', 'PostgreSQL', 'MariaDB', 'MongoDB', 'Qdrant', 'Redis'],
-  },
-  { title: 'Frontend', items: ['React', 'Next.js', 'Vite', 'Tailwind CSS', 'Alpine.js', 'Livewire'] },
-  { title: 'Infra & Tooling', items: ['Docker', 'Podman', 'Nginx', 'GitHub Actions', 'NixOS', 'Git', 'MCP / RAG'] },
+  { title: 'Backend', items: ['Node.js', 'TypeScript', 'NestJS', 'Python', 'Frappe Framework', 'Fastify'] },
+  { title: 'Database & Data', items: ['PostgreSQL', 'MariaDB', 'MongoDB', 'Prisma', 'Redis', 'Qdrant'] },
+  { title: 'Supporting Tools', items: ['Git', 'Docker', 'GitHub Actions'] },
+  { title: 'AI-assisted Development', items: ['Claude Code', 'Codex', 'OpenCode', 'Pi'] },
 ] as const
 
 export type Project = {
@@ -62,51 +55,43 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    name: 'PKWT Workforce Tracking',
-    tag: 'PT INKA',
+    name: 'WhatsApp Bot',
+    tag: 'Node.js',
     blurb:
-      'Internal dashboard tracking contract periods of PKWT employees, with reminders before contracts expire and role-scoped access for HR.',
-    tech: ['Laravel', 'Tailwind CSS', 'Alpine.js', 'MySQL'],
+      'A TypeScript bot with command routing, MongoDB-backed group tags and membership management, and image-to-sticker processing through the Baileys WhatsApp integration.',
+    tech: ['Node.js', 'TypeScript', 'Baileys', 'MongoDB', 'Mongoose'],
+    href: 'https://github.com/m-fadil/baileys-whatsapp-bot',
+  },
+  {
+    name: 'frappe-api',
+    tag: 'Frappe',
+    blurb:
+      'A REST API toolkit for Frappe with endpoint decorators, DTO-based request handling and validation pipes, configurable API logging with sensitive-field masking, and runtime controls for API availability and guest access.',
+    tech: ['Python', 'Frappe Framework', 'REST API', 'API Logging'],
+    href: 'https://github.com/m-fadil/frappe-api',
+  },
+  {
+    name: 'Frappe API Toolkit',
+    tag: 'Frappe',
+    blurb:
+      'An earlier, now archived Frappe toolkit for DTO-based request validation, consistent API error responses, and database transaction handling.',
+    tech: ['Python', 'Frappe Framework', 'API Validation'],
+    href: 'https://github.com/m-fadil/frappe-backend-v1',
+  },
+  {
+    name: 'PKWT Workforce Tracking',
+    tag: 'Business App',
+    blurb:
+      'An internal application for tracking employee contract periods, with expiry reminders and role-scoped access for HR workflows.',
+    tech: ['PHP', 'Laravel', 'MySQL', 'Alpine.js'],
     href: 'https://github.com/m-fadil/Project-SDM_Tracking-PKWT',
   },
   {
-    name: 'OTA Firmware Update',
-    tag: 'IoT',
-    blurb:
-      'Over-the-air firmware delivery for ESP8266 fleets: a server that versions builds, and devices that pull and flash updates themselves.',
-    tech: ['Python', 'Node.js', 'ESP8266'],
-    href: 'https://github.com/m-fadil/OTAUpdate-Firmware-ESP8266',
-  },
-  {
-    name: 'dot-nix',
-    tag: 'Dotfiles',
-    blurb:
-      'My NixOS configuration as a flake, split by function (system, shell, editors, dev runtimes, apps) so a laptop rebuild is one command instead of one weekend.',
-    tech: ['Nix', 'Flakes', 'Home Manager'],
-    href: 'https://github.com/m-fadil/dot-nix',
-  },
-  {
-    name: 'frappe-builder',
-    tag: 'Platform',
-    blurb:
-      'Production build harness for custom Frappe/ERPNext images: BuildKit secret mounts so credentials never land in layers, accumulating shared assets so a mid-rollout request never 404s, dynamic DNS resolution in Nginx, and multi-arch releases with build provenance.',
-    tech: ['Docker', 'Shell', 'Nginx', 'GitHub Actions'],
-    href: 'https://github.com/m-fadil/frappe-builder',
-  },
-  {
-    name: 'retrieval-service',
-    tag: 'AI',
-    blurb:
-      'AI gateway for Frappe: RAG on top of Qdrant, MCP tool calling into Frappe, and an LLM as the reasoning layer. Frappe itself runs no models, so no embeddings and no GPU.',
-    tech: ['TypeScript', 'Fastify', 'Qdrant', 'Zod', 'Docker'],
-    href: 'https://github.com/m-fadil/retrieval-service',
-  },
-  {
     name: 'frappe-executable',
-    tag: 'Tooling',
+    tag: 'Developer Tool',
     blurb:
-      'Five shell scripts for the Frappe chores nobody wants to retype: bootstrapping a bench, cloning production into dev without spamming customers, and minting API users. No hardcoded hosts or passwords, every knob is an env var.',
-    tech: ['Shell', 'Frappe', 'Bench'],
+      'A Rust CLI for recurring Frappe tasks: setting up a bench, restoring backups, disabling outbound integrations on development copies, and creating API users. Distributed as a standalone Linux binary.',
+    tech: ['Rust', 'Frappe', 'CLI'],
     href: 'https://github.com/m-fadil/frappe-executable',
   },
 ]
